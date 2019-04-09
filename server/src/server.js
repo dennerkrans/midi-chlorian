@@ -27,8 +27,12 @@ io.on('connection', socket => {
   console.log(`a user has connected: ${socket.id}`)
 
   // note
-  socket.on('note', data => {
-    midiOut.sendMessage([144, data.message, 100])
-    socket.emit('played_note', { message: data.message })
+  socket.on('note_on', data => {
+    midiOut.sendMessage([data.message, 60, 127])
+    socket.emit('played_note_on', { message: data.message })
+  })
+  socket.on('note_off', data => {
+    midiOut.sendMessage([data.message, 60, 0])
+    socket.emit('played_note_off', { message: data.message })
   })
 })
